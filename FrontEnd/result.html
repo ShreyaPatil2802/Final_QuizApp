@@ -1,0 +1,106 @@
+﻿<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz Result | Quiz Fun House</title>
+    <style>
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #ffe57f, #ff6b2d);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        h1 {
+            font-size: 32px;
+            color: #2d3436;
+        }
+
+        .score {
+            font-size: 20px;
+            margin: 20px 0;
+            color: #ff6b2d;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            font-size: 16px;
+            background-color: #ff6b2d;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+            .btn:hover {
+                background-color: #e65a1e;
+            }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>🎉 Quiz Completed!</h1>
+        <div class="score">
+            <p><strong>User:</strong> <span id="user">-</span></p>
+            <p><strong>Your Score:</strong> <span id="score">0</span>/10</p>
+        </div>
+        <a href="leaderboard.html" class="btn">🏆 View Leaderboard</a>
+    </div>
+
+    <script>
+        const score = localStorage.getItem("quizScore");
+        const username = localStorage.getItem("username");
+
+        if (!score || !username) {
+            alert("Missing score or user info. Redirecting to quiz.");
+            window.location.href = "index.html";
+        } else {
+            document.getElementById("score").textContent = score;
+            document.getElementById("user").textContent = username;
+        }
+    </script>
+
+</body>
+</html>-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Result</title>
+    <link rel="stylesheet" href="StyleSheet.css" />
+</head>
+<body>
+    <div class="container">
+        <div class="overlay">
+            <div class="card" id="resultCard">
+                <h1>🎉 Quiz Completed!</h1>
+                <div class="score">
+                    <p><strong>User:</strong> <span id="user">-</span></p>
+                    <p><strong>Your Score:</strong> <span id="score">0</span>/10</p>
+                </div>
+                <a href="leaderboard.html" class="btn">🏆 View Leaderboard</a>
+            </div>
+        </div>
+    </div>
+    <script src="result.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,138 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz Fun House</title>
+    <link rel="stylesheet" href="StyleSheet.css" />
+</head>
+<body>
+    <div class="container">
+        <div class="overlay">
+            <div class="card" id="landingCard">
+                <h1>Welcome to Quiz Fun House</h1>
+                <div class="tagline">Choose your role to get started:</div>
+                <button class="btn" id="hostBtn">Host</button>
+                <button class="btn" id="candidateBtn">Candidate</button>
+            </div>
+            <div class="host-create-full-layout" id="hostQuizCard" style="display:none;">
+                <h1 class="host-create-title">Host: Create Your Quiz Event</h1>
+                <form id="hostCreateForm" class="host-create-form-grid">
+                    <div class="form-row">
+                        <label for="eventTitle">Event Title</label>
+                        <input type="text" id="eventTitle" placeholder="Enter event title" />
+                    </div>
+                    <div class="form-row">
+                        <label for="instructions">Instructions for Test</label>
+                        <textarea id="instructions" placeholder="Enter instructions for candidates..."></textarea>
+                    </div>
+                    <div class="form-row">
+                        <label for="numQuestions">How many questions do you want to add?</label>
+                        <input type="number" id="numQuestions" min="1" max="50" value="1" />
+                    </div>
+                    <div class="form-row">
+                        <label for="duration">Quiz Duration (minutes)</label>
+                        <input type="number" id="duration" min="1" max="180" value="30" />
+                    </div>
+                    <div class="form-row">
+                        <button class="btn" id="startQuestionsBtn" type="button">Start Adding Questions</button>
+                    </div>
+                </form>
+            </div>
+            <div class="card" id="questionsCard" style="display:none;"></div>
+            <div class="card" id="feedbackCard" style="display:none;"></div>
+            <div class="card" id="linkCard" style="display:none;"></div>
+            <div id="hostDashboardContainer" style="display:none;"></div>
+            <div id="loading" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(255,255,255,0.7);z-index:999;align-items:center;justify-content:center;font-size:2rem;color:#1976d2;"><span>Loading...</span></div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+    <script src="home.js"></script>
+    <style>
+.host-create-full-layout {
+    width: 100vw;
+    min-height: 100vh;
+    background: #f5f7fa;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding: 0;
+}
+.host-create-title {
+    font-size: 2rem;
+    color: #1976d2;
+    font-weight: bold;
+    margin: 32px 0 24px 0;
+    text-align: left;
+    padding-left: 4vw;
+}
+.host-create-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px 32px;
+    width: 96vw;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: none;
+    padding: 0 2vw;
+}
+.form-row {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    margin-bottom: 0;
+}
+.form-row label {
+    color: #1976d2;
+    font-weight: 500;
+    margin-bottom: 8px;
+    font-size: 1.08rem;
+}
+.form-row input, .form-row textarea {
+    border: 1.5px solid #b0bec5;
+    background: #fff;
+    color: #222;
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 1.08rem;
+    margin-bottom: 0;
+    transition: border 0.2s, box-shadow 0.2s;
+    box-shadow: 0 1px 4px rgba(25,118,210,0.04);
+}
+.form-row input:focus, .form-row textarea:focus {
+    border: 1.5px solid #1976d2;
+    outline: none;
+    box-shadow: 0 0 0 2px #90caf9aa;
+}
+.btn {
+    margin-top: 18px;
+    font-size: 1.08rem;
+    padding: 14px 0;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #1976d2 60%, #64b5f6 100%) !important;
+    color: #fff !important;
+    font-weight: bold;
+    border: none;
+    box-shadow: 0 2px 8px rgba(25,118,210,0.08);
+    transition: background 0.3s, transform 0.2s;
+    width: 100%;
+    max-width: 320px;
+    letter-spacing: 0.5px;
+}
+.btn:hover {
+    background: linear-gradient(90deg, #64b5f6 0%, #1976d2 100%) !important;
+    color: #fff !important;
+    transform: translateY(-2px) scale(1.04);
+}
+@media (max-width: 900px) {
+    .host-create-title { font-size: 1.5rem; padding-left: 2vw; }
+    .host-create-form-grid { grid-template-columns: 1fr; gap: 18px 0; width: 98vw; max-width: 98vw; padding: 0 1vw; }
+}
+@media (max-width: 600px) {
+    .host-create-title { font-size: 1.2rem; padding-left: 2vw; }
+    .host-create-form-grid { grid-template-columns: 1fr; gap: 12px 0; width: 99vw; max-width: 99vw; padding: 0 1vw; }
+}
+</style>
+</body>
+</html>

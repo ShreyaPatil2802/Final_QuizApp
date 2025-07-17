@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Candidate Quiz Login</title>
+    <link rel="stylesheet" href="StyleSheet.css" />
+    <style>
+        body, html { height: 100%; margin: 0; padding: 0; }
+        .container, .overlay { min-height: 100vh; width: 100vw; padding: 0; }
+        .quiz-main-layout { display: flex; justify-content: space-between; align-items: flex-start; gap: 0; min-height: 100vh; width: 100vw; background: #f5f7fa; }
+        .quiz-left, .quiz-right { width: 200px; min-width: 200px; background: #e3f2fd; height: 100vh; padding-top: 40px; }
+        .quiz-center { flex: 1; min-width: 0; padding: 0 32px; max-width: none; background: none; height: 100vh; display: flex; flex-direction: column; justify-content: flex-start; }
+        .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .quiz-event-title { font-size: 1.3rem; color: #1976d2; font-weight: bold; }
+        .quiz-timer { font-size: 1.2rem; color: #d84315; font-weight: bold; background: #fff3e0; border-radius: 8px; padding: 6px 18px; margin-left: 12px; letter-spacing: 1px; }
+        .progress-bar-container { width: 100%; background: #e3f2fd; border-radius: 8px; height: 8px; margin: 10px 0 18px 0; }
+        .progress-bar { height: 8px; background: #1976d2; border-radius: 8px; transition: width 0.3s; }
+        .question-text { font-size: 1.25rem; margin: 18px 0 12px 0; color: #222; text-align:left; font-weight:500; }
+        .options-list { margin-bottom: 18px; text-align:left; }
+        .option-row { margin: 8px 0; font-size: 1.08rem; background:none; border-radius:0; padding:8px 0; box-shadow:none; }
+        .option-row input[type='radio'] { margin-right:8px; }
+        .quiz-controls { display: flex; gap: 12px; justify-content: flex-end; margin-top: 18px; }
+        .side-panel { display: flex; flex-direction: column; gap: 12px; margin-top: 40px; align-items: flex-end; }
+        .side-btn { background: #ffe082; color: #d84315; border: 1px solid #ff7043; font-weight: bold; }
+        .question-nav-panel { background: #fffde7; border-radius: 10px; padding: 12px; margin-top: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .nav-title { font-weight: bold; color: #1976d2; margin-bottom: 8px; text-align: center; }
+        .question-num { display: inline-block; width: 32px; height: 32px; line-height: 32px; border-radius: 50%; margin: 4px; text-align: center; font-weight: bold; cursor: pointer; background: #e3f2fd; color: #1976d2; border: 2px solid #e3f2fd; transition: all 0.2s; }
+        .question-num.current { background: #1976d2; color: #fff; border: 2px solid #1976d2; }
+        .question-num.visited { background: #c8e6c9; color: #333; border: 2px solid #388e3c; }
+        .question-num.review { background: #fff59d; color: #333; border: 2px solid #fbc02d; }
+        .question-num.not-visited { background: #e3f2fd; color: #aaa; border: 2px solid #e3f2fd; }
+        .intro-card, .score-card, .feedback-card { background: none !important; box-shadow: none !important; border-radius: 0 !important; }
+        .intro-section { margin: 18px 0 10px 0; text-align:left; }
+        .intro-label { font-weight: bold; color: #1976d2; display: inline-block; min-width: 120px; }
+        .intro-value { display: inline-block; color: #333; }
+        .start-btn { background: #1976d2; color: #fff; font-weight: bold; font-size: 1.1rem; margin-top: 24px; padding: 14px 36px; border-radius: 10px; }
+        .start-btn:hover { background: #1565c0; }
+        .candidate-leaderboard {
+            width: 100vw;
+            max-width: 600px;
+            margin: 0 auto 24px auto;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(25,118,210,0.08);
+            padding: 18px 12px;
+            font-size: 1.08rem;
+            text-align: center;
+        }
+        .candidate-leaderboard table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+        }
+        .candidate-leaderboard th, .candidate-leaderboard td {
+            padding: 8px 4px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+        .candidate-leaderboard th {
+            background: #e3f2fd;
+            color: #1976d2;
+            font-weight: bold;
+        }
+        @media (max-width: 900px) {
+            .candidate-leaderboard { max-width: 98vw; font-size: 1rem; padding: 12px 2vw; }
+        }
+        @media (max-width: 600px) {
+            .candidate-leaderboard { max-width: 99vw; font-size: 0.95rem; padding: 8px 1vw; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="overlay">
+            <div class="login-card" id="loginContainer">
+                <div class="heading" id="eventHeading">Quiz Event</div>
+                <form id="candidateLoginForm">
+                    <div class="input-group">
+                        <label for="email">Email ID</label>
+                        <input type="email" id="email" required placeholder="Enter your email" />
+                    </div>
+                    <div class="input-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" required placeholder="Enter your full name" />
+                    </div>
+                    <div class="error" id="loginError"></div>
+                    <button class="btn" type="submit">Login & Start</button>
+                </form>
+            </div>
+            <div class="intro-card" id="quizIntroContainer" style="display:none;"></div>
+            <div class="quiz-main-layout" id="quizTestContainer" style="display:none;"></div>
+            <div class="score-card" id="scoreContainer" style="display:none;"></div>
+            <div class="card" id="feedbackContainer" style="display:none;"></div>
+            <div id="popupConfirm" class="popup" style="display:none;">
+                <div class="popup-content">
+                    <div id="popupMsg">Are you sure to submit quiz?</div>
+                    <button class="btn" id="popupYes">Yes</button>
+                    <button class="btn" id="popupNo">No</button>
+                </div>
+            </div>
+            <div id="candidateLeaderboardContainer" class="candidate-leaderboard" style="display:none;"></div>
+        </div>
+    </div>
+    <script src="candidate.js"></script>
+</body>
+</html>

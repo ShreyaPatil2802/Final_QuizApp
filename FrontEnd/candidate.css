@@ -1,0 +1,15 @@
+body { font-family: 'Fredoka', sans-serif; background: linear-gradient(135deg, #ffe57f, #ff8a65); margin: 0; }
+.container { max-width: 600px; margin: 40px auto; background: #fff8e1; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); padding: 40px; }
+.heading { color: #ff5722; font-size: 2rem; margin-bottom: 20px; text-align: center; }
+.input-group { margin: 18px 0; }
+.input-group label { font-weight: bold; margin-bottom: 6px; display: block; }
+.input-group input, .input-group textarea { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 10px; }
+.btn { background-color: #ff7043; color: white; border: none; padding: 14px 28px; font-size: 1rem; border-radius: 8px; cursor: pointer; margin-top: 20px; transition: background 0.3s ease; }
+.btn:hover { background-color: #e64a19; }
+.question-nav { display: flex; gap: 8px; margin-bottom: 10px; }
+.question-num { width: 32px; height: 32px; border-radius: 50%; background: #ffe57f; color: #ff5722; display: flex; align-items: center; justify-content: center; font-weight: bold; cursor: pointer; border: 2px solid #ff7043; }
+.question-num.visited { background: #c8e6c9; color: #388e3c; }
+.question-num.review { background: #fff176; color: #fbc02d; border: 2px solid #fbc02d; }
+.question-num.current { border: 2px solid #ff7043; background: #ffccbc; color: #d84315; }
+.popup { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+.popup-content { background: #fff8e1; padding: 30px; border-radius: 16px; box-shadow: 0 6px 16px rgba(0,0,0,0.15); text-align: center; }

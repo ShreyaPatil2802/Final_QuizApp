@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin</title>
+    <link rel="stylesheet" href="StyleSheet.css" />
+</head>
+<body>
+    <div class="container">
+        <div class="overlay">
+            <div class="card" id="adminCard">
+                <nav class="navbar">
+                    <a href="home.html">Home</a>
+                    <!--<a href="index.html">Quiz</a>-->
+                    <a href="leaderboard.html">Leaderboard</a>
+                    <a href="admin-login.html">Admin</a>
+                </nav>
+
+                <div class="admin-content">
+                    <h2>🛠️ Manage Questions</h2>
+                    <input type="text" id="questionId" placeholder="Question ID (for update/delete)" />
+                    <select id="category">
+                        <option value="">Select Category</option>
+                        <option value="Geography">Geography</option>
+                        <option value="General Knowledge">General Knowledge</option>
+                        <option value="Mathematics">Mathematics</option>
+                        <option value="Computer Science">Computer Science</option>
+                    </select>
+                    <input type="text" id="questionText" placeholder="Enter question text" />
+                    <input type="text" id="option1" placeholder="Option 1" />
+                    <input type="text" id="option2" placeholder="Option 2" />
+                    <input type="text" id="option3" placeholder="Option 3" />
+                    <input type="text" id="option4" placeholder="Option 4" />
+                    <input type="number" id="correctOption" placeholder="Correct Option Number (1-4)" min="1" max="4" />
+                    <button class="btn" id="addBtn">➕ Add Question</button>
+                    <button class="btn" id="updateBtn">✏️ Update Question</button>
+                    <button class="btn" id="deleteBtn">🗑️ Delete Question</button>
+                    <div id="status-message" class="message"></div>
+                </div>
+
+                <div class="admin-feedback-dashboard" id="adminFeedbackDashboard"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+    <script>
+        // Real-time feedback dashboard for admin
+        const feedbackDashboard = document.getElementById('adminFeedbackDashboard');
+        if (window.signalR && window.signalR.HubConnection) {
+            const feedbackConnection = new window.signalR.HubConnectionBuilder()
+                .withUrl('/feedbackHub')
+                .build();
+            feedbackConnection.on('FeedbackReceived', function(feedback) {
+                // Prepend new feedback (latest first)
+                const entry = document.createElement('div');
+                entry.className = 'feedback-entry';
+                entry.innerHTML = `
+                    <div class="feedback-header">
+                        <span class="feedback-name">${feedback.fullName}</span>
+                        <span class="feedback-email">${feedback.email}</span>
+                        <span class="feedback-rating">${'★'.repeat(feedback.starRating)}${'☆'.repeat(5-feedback.starRating)}</span>
+                        <span class="feedback-time">${new Date(feedback.submittedAt).toLocaleString()}</span>
+                    </div>
+                    <div class="feedback-questions">
+                        ${feedback.questions.map((q, i) => `<div><b>Q${i+1}:</b> ${q} <b>Ans:</b> ${feedback.responses[i]}</div>`).join('')}
+                    </div>
+                    <div class="feedback-comments">${feedback.comments}</div>
+                `;
+                feedbackDashboard.prepend(entry);
+            });
+            feedbackConnection.start();
+        }
+        // Responsive feedback entry styles
+        const style = document.createElement('style');
+        style.innerHTML = `
+        .feedback-entry { background: #fff; border-radius: 10px; box-shadow: 0 2px 8px rgba(25,118,210,0.08); margin: 18px 0; padding: 18px 16px; max-width: 600px; width: 98vw; }
+        .feedback-header { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 8px; font-size: 1.08rem; }
+        .feedback-name { font-weight: bold; color: #1976d2; }
+        .feedback-email { color: #388e3c; font-size: 0.98rem; }
+        .feedback-rating { color: #ffb300; font-size: 1.2rem; margin-left: 8px; }
+        .feedback-time { color: #888; font-size: 0.95rem; margin-left: auto; }
+        .feedback-questions { margin-bottom: 8px; font-size: 1rem; }
+        .feedback-comments { color: #333; font-size: 1.05rem; background: #e3f2fd; border-radius: 8px; padding: 8px 12px; margin-top: 8px; }
+        @media (max-width: 900px) { .feedback-entry { max-width: 98vw; font-size: 1rem; padding: 12px 2vw; } }
+        @media (max-width: 600px) { .feedback-entry { max-width: 99vw; font-size: 0.95rem; padding: 8px 1vw; } .feedback-header { font-size: 0.95rem; gap: 6px; } }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

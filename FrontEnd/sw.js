@@ -1,0 +1,2 @@
+﻿self.skipWaiting();
+clients.claim();

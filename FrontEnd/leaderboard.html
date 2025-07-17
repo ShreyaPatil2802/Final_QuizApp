@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leaderboard | Quiz Fun House</title>
+    <link rel="stylesheet" href="StyleSheet.css" />
+</head>
+<body>
+    <div class="container">
+        <div class="overlay">
+            <div class="card" id="leaderboardCard">
+                <h2>🏆 Leaderboard</h2>
+                <table id="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>User</th>
+                            <th>FirstName</th>
+                            <th>LastName</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                    </tbody>
+                </table>
+                <div class="congrats" id="congrats-message"></div>
+                <a href="category.html" class="play-again">🔁 Play Again</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const tbody = document.querySelector("#leaderboard-table tbody");
+            const congrats = document.getElementById("congrats-message");
+
+            try {
+                const res = await fetch("https://localhost:7291/api/quiz/leaderboard");
+                const data = await res.json();
+
+                if (!Array.isArray(data) || data.length === 0) {
+                    tbody.innerHTML = "<tr><td colspan='5'>No scores yet.</td></tr>";
+                    return;
+                }
+
+                data.forEach((entry, index) => {
+                    const row = document.createElement("tr");
+                    const avatarUrl = `https://api.dicebear.com/7.x/thumbs/svg?seed=${entry.email || entry.username}`;
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td class="username-cell">
+                            <img src="${avatarUrl}" alt="avatar" class="avatar" />
+                            ${entry.email || entry.username}
+                        </td>
+                        <td>${entry.firstName || '-'}</td>
+                        <td>${entry.lastName || '-'}</td>
+                        <td>${entry.score ?? 0}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                congrats.textContent = `🎉 Congratulations ${data[0].firstName || data[0].email || data[0].username} for securing the top rank!`;
+            } catch (err) {
+                tbody.innerHTML = "<tr><td colspan='5'>Failed to load leaderboard.</td></tr>";
+                console.error("Leaderboard fetch error:", err);
+            }
+        });
+    </script>
+
+</body>
+</html>
+
+
+
