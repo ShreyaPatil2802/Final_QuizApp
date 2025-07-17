@@ -30,5 +30,7 @@ EXPOSE 80
 
 ENTRYPOINT ["dotnet", "Working_Final_QuizApp.dll"]
 
-Microsoft Artifact Registry
-Microsoft Artifact Registry (also known as Microsoft Container Registry or MCR) Discovery Portal
+# >>> Microsoft Artifact Registry
+# >>> Microsoft Artifact Registry (also known as Microsoft Container Registry or MCR)
+
+#Microsoft Artifact Registry (also known as Microsoft Container Registry or MCR) Discovery Portal
